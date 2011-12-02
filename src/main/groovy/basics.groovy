@@ -10,7 +10,7 @@ jedis.flushAll()
 
 println '--- increments ---'
 println jedis.incr('counter')
-println jedis.incr('counter')
+println jedis.decr('counter')
 
 println '--- expiration ---'
 jedis.set "session-1", "data"
@@ -35,3 +35,23 @@ jedis.lpush "list", "2"
 jedis.lpush "list", "1"
 jedis.rpush "list", "3"
 println jedis.lrange("list", 0, Long.MAX_VALUE)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

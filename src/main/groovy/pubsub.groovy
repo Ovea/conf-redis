@@ -10,17 +10,19 @@ long msg;
 
 println "I am user ${id}"
 
+JedisPubSub subscriber = [
+    onMessage: {String channel, String message ->
+        println message
+    },
+    onPMessage: {String pattern, String channel, String message ->},
+    onSubscribe: {String channel, int subscribedChannels ->},
+    onUnsubscribe: {String channel, int subscribedChannels ->},
+    onPUnsubscribe: {String pattern, int subscribedChannels ->},
+    onPSubscribe: {String pattern, int subscribedChannels ->}
+] as JedisPubSub
+
 Thread.start {
-    new Jedis('localhost').subscribe([
-        onMessage: {String channel, String message ->
-            println message
-        },
-        onPMessage: {String pattern, String channel, String message ->},
-        onSubscribe: {String channel, int subscribedChannels ->},
-        onUnsubscribe: {String channel, int subscribedChannels ->},
-        onPUnsubscribe: {String pattern, int subscribedChannels ->},
-        onPSubscribe: {String pattern, int subscribedChannels ->}
-    ] as JedisPubSub, 'chatroom.public')
+    new Jedis('localhost').subscribe(subscriber, 'chatroom.public')
 }
 
 while (!Thread.currentThread().interrupted) {
@@ -28,3 +30,4 @@ while (!Thread.currentThread().interrupted) {
     jedis.publish "chatroom.public", "[user-${id}] message ${msg++}"
 }
 
+//subscriber.unsubscribe()

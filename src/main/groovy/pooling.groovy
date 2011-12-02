@@ -15,7 +15,7 @@ JedisPool pool = new JedisPool(new GenericObjectPool.Config(
 ), '127.0.0.1', 6379)
 
 // borrowing a resource (redis connection)
-Jedis jedis = pool.resource
+Jedis jedis = pool.getResource()
 try {
     // execute some redis commands
     jedis.append 'key', 'a '
